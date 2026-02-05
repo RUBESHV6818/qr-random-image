@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: #0b132b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  color: white;
+}
+
+.container {
+  text-align: center;
+}
+
+img {
+  max-width: 100pxpx;
+  border-radius: 12px;
+  margin: 20px 0;
+}
