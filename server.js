@@ -6,9 +6,9 @@ const QRCode = require('qrcode');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const imagesDir = path.join(__dirname, 'images');
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static('public'));
+const imagesDir = path.join(__dirname, 'images');
 
 // Home page
 app.get('/', (req, res) => {
