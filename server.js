@@ -93,8 +93,6 @@ app.get('/qr', async (req, res) => {
       box-sizing: border-box;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
-
-    body {
       body {
   margin: 0;
   height: 100vh;
@@ -108,7 +106,15 @@ app.get('/qr', async (req, res) => {
     linear-gradient(180deg, #0b102a, #06081a);
 }
 
-    }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.05;
+  pointer-events: none;
+}
+
 
     .card {
       width: 320px;
