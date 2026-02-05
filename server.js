@@ -86,11 +86,12 @@ app.get('/qr', async (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Scan the QR</title>
+  <title>QR Experience</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * {
       box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     body {
@@ -99,74 +100,64 @@ app.get('/qr', async (req, res) => {
       display: flex;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at top, #6366f1, #020617);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #6b6ef9, #0f1438 70%);
     }
 
-    .glass {
-      backdrop-filter: blur(14px);
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      padding: 28px;
+    .card {
       width: 320px;
+      padding: 26px 22px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      border-radius: 22px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
       text-align: center;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.08),
-        0 30px 80px rgba(0,0,0,0.6);
-      animation: floatIn 0.5s ease;
-    }
-
-    @keyframes floatIn {
-      from { opacity: 0; transform: translateY(20px) scale(0.96); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     h1 {
-      margin: 0 0 14px;
-      font-size: 20px;
-      color: #e5e7eb;
-      letter-spacing: 0.4px;
+      margin: 0 0 18px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.3px;
     }
 
-    .qr-wrap {
-      margin: 18px auto;
+    .qr-box {
+      background: #ffffff;
       padding: 14px;
-      border-radius: 20px;
-      background: white;
-      box-shadow:
-        0 0 0 6px rgba(99,102,241,0.25),
-        0 0 35px rgba(99,102,241,0.7);
+      border-radius: 16px;
       display: inline-block;
     }
 
-    .qr-wrap img {
+    .qr-box img {
+      width: 220px;
+      height: 220px;
       display: block;
-      border-radius: 12px;
     }
 
-    p {
+    .desc {
       margin-top: 18px;
       font-size: 13px;
-      color: #c7d2fe;
+      color: #d0d4ff;
     }
 
     .sub {
       margin-top: 6px;
       font-size: 11px;
-      color: #94a3b8;
+      color: #9aa0ff;
     }
   </style>
 </head>
-<body>
-  <div class="glass">
-    <h1>Scan Me 🤭</h1>
 
-    <div class="qr-wrap">
+<body>
+  <div class="card">
+    <h1>QR Experience</h1>
+
+    <div class="qr-box">
       <img src="${qr}" alt="QR Code">
     </div>
 
-    <p>Each scan displays a random image</p>
-<div class="sub">Rescan to view a different one</div>
+    <div class="desc">Each scan displays a random image</div>
+    <div class="sub">Rescan to view a different one</div>
   </div>
 </body>
 </html>
