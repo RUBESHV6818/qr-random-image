@@ -16,7 +16,7 @@ app.get('/', async (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Random Image</title>
+  <title>Happy Scan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -71,9 +71,11 @@ app.get('/image', async (req, res) => {
       return res.status(500).send('No images found');
     }
 
-    const randomImage = images[Math.floor(Math.random() * images.length)];
+    const randomImage =
+      images[Math.floor(Math.random() * images.length)];
+
     res.sendFile(path.join(imagesDir, randomImage));
-  } catch {
+  } catch (err) {
     res.status(500).send('Error loading images');
   }
 });
@@ -97,9 +99,8 @@ app.get('/qr', async (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>QR Experience</title>
+  <title>Happy Scan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -121,6 +122,7 @@ app.get('/qr', async (req, res) => {
 
       background-size: 200% 200%;
       animation: bgMove 20s ease infinite;
+      position: relative;
     }
 
     @keyframes bgMove {
@@ -129,9 +131,36 @@ app.get('/qr', async (req, res) => {
       100% { background-position: 0% 50%; }
     }
 
+    /* ===== TITLE ===== */
+    .title {
+      position: absolute;
+      top: 42px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: #eef2ff;
+
+      text-shadow:
+        0 0 10px rgba(99,102,241,0.8),
+        0 0 24px rgba(168,85,247,0.6);
+
+      animation: float 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, -6px); }
+      100% { transform: translate(-50%, 0); }
+    }
+
+    /* ===== CARD ===== */
     .card {
       width: 320px;
       padding: 26px 22px;
+      margin-top: 40px;
 
       background: linear-gradient(
         180deg,
@@ -149,13 +178,6 @@ app.get('/qr', async (req, res) => {
       text-align: center;
     }
 
-    h1 {
-      margin: 0 0 18px;
-      font-size: 18px;
-      font-weight: 600;
-      color: #f8fafc;
-    }
-
     .qr-box {
       background: #ffffff;
       padding: 16px;
@@ -166,24 +188,6 @@ app.get('/qr', async (req, res) => {
         0 0 0 6px rgba(99,102,241,0.15),
         0 18px 40px rgba(0,0,0,0.35);
     }
-        .title {
-  position: fixed;
-  top: 24px;
-  width: 100%;
-  text-align: center;
-
-  font-size: 32px;
-  font-weight: 700;
-  letter-spacing: 1px;
-
-  color: #e0e7ff;
-
-  text-shadow:
-    0 0 12px rgba(99,102,241,0.8),
-    0 0 28px rgba(168,85,247,0.6);
-
-  font-family: 'Poppins', system-ui, sans-serif;
-}
 
     .qr-box img {
       width: 220px;
@@ -206,13 +210,9 @@ app.get('/qr', async (req, res) => {
 </head>
 
 <body>
+  <div class="title">Happy Scan</div>
+
   <div class="card">
-  <div class="title">
-  Happy Scan
-</div>
-
-    <h1>QR Experience</h1>
-
     <div class="qr-box">
       <img src="${qr}" alt="QR Code">
     </div>
