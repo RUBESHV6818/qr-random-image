@@ -6,136 +6,139 @@ const QRCode = require('qrcode');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, 'public')));
-
 const imagesDir = path.join(__dirname, 'images');
 
-// Home page
-app.get('/', (req, res) => {
-    res.send(`
+// Home → shows random image
+app.get('/', async (req, res) => {
+  res.send(`
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Random Image Viewer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #111;
-        }
-        img {
-            max-width: 95%;
-            max-height: 95%;
-            border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            animation: fadeIn 0.5s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .hint {
-            position: fixed;
-            bottom: 15px;
-            color: #aaa;
-            font-size: 12px;
-        }
-    </style>
+  <title>Random Image</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0f172a;
+    }
+    img {
+      max-width: 92%;
+      max-height: 92%;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.6);
+      animation: fade 0.5s ease;
+    }
+    @keyframes fade {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .hint {
+      position: fixed;
+      bottom: 16px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
 </head>
 <body>
-    <img src="/image?rand=${Date.now()}" />
-    <div class="hint">Refresh or scan again for another image</div>
+  <img src="/image?nocache=${Date.now()}">
+  <div class="hint">Scan again or refresh for another image</div>
 </body>
 </html>
-    `);
+  `);
 });
 
-// Random image endpoint
+// Serves random image
 app.get('/image', async (req, res) => {
-    try {
-        let images = await fs.promises.readdir(imagesDir);
+  try {
+    let images = await fs.promises.readdir(imagesDir);
+    images = images.filter(f => /\.(png|jpg|jpeg|gif)$/i.test(f));
 
-        images = images.filter(file =>
-            /\.(jpg|jpeg|png|gif)$/i.test(file)
-        );
-
-        if (images.length === 0) {
-            return res.status(500).send('No images found');
-        }
-
-        const randomImage =
-            images[Math.floor(Math.random() * images.length)];
-
-        res.sendFile(path.join(imagesDir, randomImage));
-    } catch (err) {
-        res.status(500).send('Error reading images folder');
+    if (!images.length) {
+      return res.status(500).send('No images found');
     }
+
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+    res.sendFile(path.join(imagesDir, randomImage));
+  } catch {
+    res.status(500).send('Error loading images');
+  }
 });
 
 // QR page
 app.get('/qr', async (req, res) => {
-    try {
-        const url = `${req.protocol}://${req.get('host')}/`;
-        const qr = await QRCode.toDataURL(url, {
-            margin: 1,
-            width: 300
-        });
+  const url = `${req.protocol}://${req.get('host')}/`;
 
-        res.send(`
+  const qr = await QRCode.toDataURL(url, {
+    width: 260,
+    margin: 2,
+    color: {
+      dark: '#0f172a',
+      light: '#ffffff'
+    }
+  });
+
+  res.send(`
 <!DOCTYPE html>
 <html>
 <head>
-    <title>QR Demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f4f4f4;
-        }
-
-        .wrapper {
-            position: relative;
-            width: 350px;
-        }
-
-        .template {
-            width: 100%;
-            display: block;
-        }
-
-        .qr {
-            position: absolute;
-            top: 70px;     /* adjust */
-            right: 25px;   /* adjust */
-            width: 180px;
-            height: 180px;
-            background: white;
-            padding: 8px;
-            border-radius: 8px;
-        }
-    </style>
+  <title>Scan QR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #6366f1, #0f172a);
+      font-family: system-ui, sans-serif;
+    }
+    .card {
+      background: white;
+      padding: 28px;
+      border-radius: 20px;
+      text-align: center;
+      width: 320px;
+      box-shadow: 0 25px 60px rgba(0,0,0,.35);
+      animation: pop 0.4s ease;
+    }
+    @keyframes pop {
+      from { transform: scale(.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    h2 {
+      margin: 0 0 14px;
+      color: #0f172a;
+    }
+    img {
+      border-radius: 14px;
+      padding: 10px;
+      background: #fff;
+      box-shadow: inset 0 0 0 2px #e5e7eb;
+    }
+    p {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #475569;
+    }
+  </style>
 </head>
 <body>
-    <div class="wrapper">
-        <img src="/template.png" class="template">
-        <img src="${qr}" class="qr">
-    </div>
+  <div class="card">
+    <h2>Scan Me 📱</h2>
+    <img src="${qr}">
+    <p>Each scan shows a random image</p>
+  </div>
 </body>
 </html>
-        `);
-    } catch (err) {
-        res.status(500).send('QR generation failed');
-    }
+  `);
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Running on port ${PORT}`);
 });
