@@ -86,58 +86,93 @@ app.get('/qr', async (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Scan QR</title>
+  <title>Scan the QR</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at top, #6366f1, #0f172a);
-      font-family: system-ui, sans-serif;
+      background: radial-gradient(circle at top, #6366f1, #020617);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    .card {
-      background: white;
+
+    .glass {
+      backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
       padding: 28px;
-      border-radius: 20px;
-      text-align: center;
       width: 320px;
-      box-shadow: 0 25px 60px rgba(0,0,0,.35);
-      animation: pop 0.4s ease;
+      text-align: center;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.08),
+        0 30px 80px rgba(0,0,0,0.6);
+      animation: floatIn 0.5s ease;
     }
-    @keyframes pop {
-      from { transform: scale(.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    h2 {
+
+    h1 {
       margin: 0 0 14px;
-      color: #0f172a;
+      font-size: 20px;
+      color: #e5e7eb;
+      letter-spacing: 0.4px;
     }
-    img {
-      border-radius: 14px;
-      padding: 10px;
-      background: #fff;
-      box-shadow: inset 0 0 0 2px #e5e7eb;
+
+    .qr-wrap {
+      margin: 18px auto;
+      padding: 14px;
+      border-radius: 20px;
+      background: white;
+      box-shadow:
+        0 0 0 6px rgba(99,102,241,0.25),
+        0 0 35px rgba(99,102,241,0.7);
+      display: inline-block;
     }
+
+    .qr-wrap img {
+      display: block;
+      border-radius: 12px;
+    }
+
     p {
-      margin-top: 14px;
-      font-size: 14px;
-      color: #475569;
+      margin-top: 18px;
+      font-size: 13px;
+      color: #c7d2fe;
+    }
+
+    .sub {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #94a3b8;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>Scan Me 📱</h2>
-    <img src="${qr}">
-    <p>Each scan shows a random image</p>
+  <div class="glass">
+    <h1>Scan Me 📱</h1>
+
+    <div class="qr-wrap">
+      <img src="${qr}" alt="QR Code">
+    </div>
+
+    <p>Every scan shows a random image</p>
+    <div class="sub">Scan again for surprises ✨</div>
   </div>
 </body>
 </html>
   `);
 });
+
 
 app.listen(PORT, () => {
   console.log(`Running on port ${PORT}`);
