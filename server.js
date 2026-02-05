@@ -95,12 +95,19 @@ app.get('/qr', async (req, res) => {
     }
 
     body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at top, #6b6ef9, #0f1438 70%);
+      body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(120,130,255,0.35), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(100,200,255,0.25), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(180,120,255,0.25), transparent 50%),
+    linear-gradient(180deg, #0b102a, #06081a);
+}
+
     }
 
     .card {
