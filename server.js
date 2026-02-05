@@ -99,6 +99,7 @@ app.get('/qr', async (req, res) => {
 <head>
   <title>QR Experience</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -165,6 +166,24 @@ app.get('/qr', async (req, res) => {
         0 0 0 6px rgba(99,102,241,0.15),
         0 18px 40px rgba(0,0,0,0.35);
     }
+        .title {
+  position: fixed;
+  top: 24px;
+  width: 100%;
+  text-align: center;
+
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  color: #e0e7ff;
+
+  text-shadow:
+    0 0 12px rgba(99,102,241,0.8),
+    0 0 28px rgba(168,85,247,0.6);
+
+  font-family: 'Poppins', system-ui, sans-serif;
+}
 
     .qr-box img {
       width: 220px;
@@ -188,6 +207,10 @@ app.get('/qr', async (req, res) => {
 
 <body>
   <div class="card">
+  <div class="title">
+  Happy Scan
+</div>
+
     <h1>QR Experience</h1>
 
     <div class="qr-box">
