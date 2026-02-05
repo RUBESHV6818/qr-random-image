@@ -8,7 +8,9 @@ const PORT = process.env.PORT || 3000;
 
 const imagesDir = path.join(__dirname, 'images');
 
-// Home → shows random image
+/* ===========================
+   HOME → RANDOM IMAGE
+=========================== */
 app.get('/', async (req, res) => {
   res.send(`
 <!DOCTYPE html>
@@ -23,19 +25,22 @@ app.get('/', async (req, res) => {
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #0f172a;
+      background: #020617;
     }
+
     img {
       max-width: 92%;
       max-height: 92%;
-      border-radius: 16px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.6);
+      border-radius: 18px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
       animation: fade 0.5s ease;
     }
+
     @keyframes fade {
       from { opacity: 0; transform: scale(0.96); }
       to { opacity: 1; transform: scale(1); }
     }
+
     .hint {
       position: fixed;
       bottom: 16px;
@@ -52,11 +57,15 @@ app.get('/', async (req, res) => {
   `);
 });
 
-// Serves random image
+/* ===========================
+   RANDOM IMAGE API
+=========================== */
 app.get('/image', async (req, res) => {
   try {
     let images = await fs.promises.readdir(imagesDir);
-    images = images.filter(f => /\.(png|jpg|jpeg|gif)$/i.test(f));
+    images = images.filter(file =>
+      /\.(png|jpg|jpeg|gif)$/i.test(file)
+    );
 
     if (!images.length) {
       return res.status(500).send('No images found');
@@ -69,7 +78,9 @@ app.get('/image', async (req, res) => {
   }
 });
 
-// QR page
+/* ===========================
+   QR PAGE
+=========================== */
 app.get('/qr', async (req, res) => {
   const url = `${req.protocol}://${req.get('host')}/`;
 
@@ -77,7 +88,7 @@ app.get('/qr', async (req, res) => {
     width: 260,
     margin: 2,
     color: {
-      dark: '#0f172a',
+      dark: '#020617',
       light: '#ffffff'
     }
   });
@@ -93,71 +104,67 @@ app.get('/qr', async (req, res) => {
       box-sizing: border-box;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
-      body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(120,130,255,0.35), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(100,200,255,0.25), transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(180,120,255,0.25), transparent 50%),
-    linear-gradient(180deg, #0b102a, #06081a);
-}
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-  opacity: 0.05;
-  pointer-events: none;
-}
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-  @keyframes floatBg {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+      background:
+        radial-gradient(circle at 15% 20%, rgba(99,102,241,0.35), transparent 45%),
+        radial-gradient(circle at 85% 25%, rgba(56,189,248,0.30), transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(168,85,247,0.25), transparent 50%),
+        linear-gradient(180deg, #020617, #020617);
 
-body {
-  background-size: 200% 200%;
-  animation: floatBg 18s ease infinite;
-}
+      background-size: 200% 200%;
+      animation: bgMove 20s ease infinite;
+    }
 
-
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
     .card {
-  width: 320px;
-  padding: 26px 22px;
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.14),
-    rgba(255,255,255,0.05)
-  );
-  backdrop-filter: blur(16px);
-  border-radius: 22px;
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255,255,255,0.15);
-  text-align: center;
-}
+      width: 320px;
+      padding: 26px 22px;
+
+      background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.14),
+        rgba(255,255,255,0.06)
+      );
+
+      backdrop-filter: blur(18px);
+      border-radius: 24px;
+
+      box-shadow:
+        0 40px 90px rgba(0,0,0,0.55),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+
+      text-align: center;
+    }
 
     h1 {
       margin: 0 0 18px;
       font-size: 18px;
       font-weight: 600;
-      color: #ffffff;
-      letter-spacing: 0.3px;
+      color: #f8fafc;
     }
-      .qr-box {
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 18px;
-  display: inline-block;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-}
+
+    .qr-box {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 20px;
+      display: inline-block;
+
+      box-shadow:
+        0 0 0 6px rgba(99,102,241,0.15),
+        0 18px 40px rgba(0,0,0,0.35);
+    }
 
     .qr-box img {
       width: 220px;
@@ -168,13 +175,13 @@ body {
     .desc {
       margin-top: 18px;
       font-size: 13px;
-      color: #d0d4ff;
+      color: #c7d2fe;
     }
 
     .sub {
       margin-top: 6px;
       font-size: 11px;
-      color: #9aa0ff;
+      color: #a5b4fc;
     }
   </style>
 </head>
@@ -195,7 +202,9 @@ body {
   `);
 });
 
-
+/* ===========================
+   START SERVER
+=========================== */
 app.listen(PORT, () => {
-  console.log(`Running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
