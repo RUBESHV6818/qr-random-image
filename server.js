@@ -214,6 +214,7 @@ app.get('/qr', async (req, res) => {
 
   <div class="card">
     <div class="qr-box">
+    <h1>Scan Me</h1>
       <img src="${qr}" alt="QR Code">
     </div>
 
