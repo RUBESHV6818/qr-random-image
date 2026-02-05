@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 3000;
 
 const imagesDir = path.join(__dirname, 'images');
 
+app.use(express.static('public'));
+
 // Home page
 app.get('/', (req, res) => {
     res.send(`
@@ -78,13 +80,16 @@ app.get('/image', async (req, res) => {
 app.get('/qr', async (req, res) => {
     try {
         const url = `${req.protocol}://${req.get('host')}/`;
-        const qr = await QRCode.toDataURL(url);
+        const qr = await QRCode.toDataURL(url, {
+            margin: 1,
+            width: 300
+        });
 
         res.send(`
 <!DOCTYPE html>
 <html>
 <head>
-    <title>QR Image Viewer</title>
+    <title>QR Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -93,45 +98,41 @@ app.get('/qr', async (req, res) => {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            font-family: Arial, sans-serif;
+            background: #f4f4f4;
         }
-        .card {
+
+        .wrapper {
+            position: relative;
+            width: 350px;
+        }
+
+        .template {
+            width: 100%;
+            display: block;
+        }
+
+        .qr {
+            position: absolute;
+            top: 70px;     /* adjust */
+            right: 25px;   /* adjust */
+            width: 180px;
+            height: 180px;
             background: white;
-            padding: 30px;
-            border-radius: 16px;
-            text-align: center;
-            width: 90%;
-            max-width: 350px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-        img {
-            width: 220px;
-            height: 220px;
-        }
-        p {
-            color: #555;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-        .hint {
-            font-size: 12px;
-            color: #888;
+            padding: 8px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>Scan Me 📱</h2>
-        <img src="${qr}" />
-        <p>Scan to view a random image</p>
-        <div class="hint">Scan again for a different one</div>
+    <div class="wrapper">
+        <img src="/template.png" class="template">
+        <img src="${qr}" class="qr">
     </div>
 </body>
 </html>
         `);
     } catch (err) {
-        res.status(500).send('Failed to generate QR code');
+        res.status(500).send('QR generation failed');
     }
 });
 
