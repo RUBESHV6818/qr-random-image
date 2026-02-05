@@ -115,16 +115,34 @@ body::before {
   pointer-events: none;
 }
 
+  @keyframes floatBg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body {
+  background-size: 200% 200%;
+  animation: floatBg 18s ease infinite;
+}
+
+
 
     .card {
-      width: 320px;
-      padding: 26px 22px;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(16px);
-      border-radius: 22px;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-      text-align: center;
-    }
+  width: 320px;
+  padding: 26px 22px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.14),
+    rgba(255,255,255,0.05)
+  );
+  backdrop-filter: blur(16px);
+  border-radius: 22px;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+  text-align: center;
+}
 
     h1 {
       margin: 0 0 18px;
@@ -133,13 +151,13 @@ body::before {
       color: #ffffff;
       letter-spacing: 0.3px;
     }
-
-    .qr-box {
-      background: #ffffff;
-      padding: 14px;
-      border-radius: 16px;
-      display: inline-block;
-    }
+      .qr-box {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 18px;
+  display: inline-block;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
 
     .qr-box img {
       width: 220px;
