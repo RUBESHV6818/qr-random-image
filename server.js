@@ -159,14 +159,14 @@ app.get('/qr', async (req, res) => {
 </head>
 <body>
   <div class="glass">
-    <h1>Scan Me 📱</h1>
+    <h1>Scan Me 🤭</h1>
 
     <div class="qr-wrap">
       <img src="${qr}" alt="QR Code">
     </div>
 
-    <p>Every scan shows a random image</p>
-    <div class="sub">Scan again for surprises ✨</div>
+    <p>Each scan displays a random image</p>
+<div class="sub">Rescan to view a different one</div>
   </div>
 </body>
 </html>
