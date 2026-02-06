@@ -247,6 +247,41 @@ app.get('/qr', async (req, res) => {
       font-size: 13px;
       color: #c7d2fe;
     }
+      .scan-text {
+  margin-bottom: 14px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-align: center;
+
+  background: linear-gradient(
+    90deg,
+    #818cf8,
+    #38bdf8,
+    #a855f7
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 0 12px rgba(99,102,241,0.7),
+    0 0 26px rgba(168,85,247,0.6);
+
+  animation: scanGlow 2.5s ease-in-out infinite;
+}
+
+@keyframes scanGlow {
+  0%, 100% {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
 
     .sub {
       margin-top: 6px;
@@ -263,6 +298,7 @@ app.get('/qr', async (req, res) => {
   <div class="title">Happy Scan</div>
 
   <div class="card">
+  <div class="scan-text">SCAN ME</div>
     <div class="qr-box">
       <img src="${qr}" alt="QR Code">
     </div>
