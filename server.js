@@ -8,9 +8,6 @@ const PORT = process.env.PORT || 3000;
 
 const imagesDir = path.join(__dirname, 'images');
 
-/* ===========================
-   HOME → RANDOM IMAGE
-=========================== */
 app.get('/', async (req, res) => {
   res.send(`
 <!DOCTYPE html>
@@ -115,10 +112,6 @@ app.get('/', async (req, res) => {
   `);
 });
 
-
-/* ===========================
-   RANDOM IMAGE API
-=========================== */
 app.get('/image', async (req, res) => {
   try {
     let images = await fs.promises.readdir(imagesDir);
@@ -137,9 +130,6 @@ app.get('/image', async (req, res) => {
   }
 });
 
-/* ===========================
-   QR PAGE
-=========================== */
 app.get('/qr', async (req, res) => {
   const url = `${req.protocol}://${req.get('host')}/`;
 
@@ -380,9 +370,6 @@ app.get('/qr', async (req, res) => {
   `);
 });
 
-/* ===========================
-   START SERVER
-=========================== */
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
