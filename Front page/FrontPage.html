@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>QR Smart Systems</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barriecito&family=Boldonse&family=Luckiest+Guy&family=Sigmar&display=swap" rel="stylesheet">
+
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background:
+    linear-gradient(rgba(5,15,40,.75), rgba(5,15,40,.9)),
+    url("./images/FrontPage\ BG.jpg") center / cover no-repeat;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: .4;
+  z-index: 1;
+}
+
+.hero {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 250px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.hero h1 {
+  background: linear-gradient(90deg, #a296e5, #5699f7);
+  background-clip: text;             
+  -webkit-background-clip: text;      
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.hero p {
+  color: #43c483;
+  font-family: "Barriecito", system-ui;
+}
+
+
+.hero p {
+  max-width: 640px;
+  font-size: 1.1rem;
+  opacity: .85;
+  line-height: 1.6;
+}
+
+.hero-text {
+  transform: translateY(-40px); 
+}
+
+.button {
+  --main-color: rgb(46,213,115);
+  --main-bg: rgba(46,213,116,.36);
+  --pattern: rgba(46,213,116,.08);
+
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .4rem;
+  color: var(--main-color);
+  padding: 1rem 3rem;
+  font-weight: 700;
+  font-size: 1.3rem;
+
+  background:
+    radial-gradient(circle, var(--main-bg) 0%, transparent 95%),
+    linear-gradient(var(--pattern) 1px, transparent 1px),
+    linear-gradient(to right, var(--pattern) 1px, transparent 1px);
+
+  background-size: cover, 15px 15px, 15px 15px;
+
+  border: 1px solid transparent;
+  border-image:
+    radial-gradient(circle, var(--main-color), transparent) 1;
+
+  transition:
+    background-size .25s ease,
+    transform .25s ease,
+    box-shadow .25s ease;
+  margin-top: 0;
+}
+
+.button:hover {
+  background-size: cover, 10px 10px, 10px 10px;
+  transform: translateY(-2px);
+}
+
+.button:active {
+  transform: translateY(0);
+  filter: hue-rotate(250deg);
+}
+
+.qr {
+  position: absolute;
+  background: white;
+  padding: 14px;
+  border-radius: 18px;
+  box-shadow: 0 30px 70px rgba(0,0,0,.45);
+  animation: float 8s ease-in-out infinite;
+  z-index: 2;
+}
+
+.qr img {
+  width: 100%;
+  height: 100%;
+}
+
+.qr.main {
+  width: 150px;
+  height: 150px;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 3s infinite;
+}
+
+.qr.one { width:105px; height:105px; top:14%; left:18%; }
+.qr.two { width:95px; height:95px; top:26%; right:18%; animation-delay:1s; }
+.qr.three { width:100px; height:100px; bottom:22%; left:22%; animation-delay:2s; }
+.qr.four {
+  width:85px;
+  height:85px;
+  bottom:28%;
+  right:24%;
+  animation-delay:3s;
+  opacity:.75;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,255,255,.4); }
+  70% { box-shadow: 0 0 0 18px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2.5rem; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="qr one"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Attendance"></div>
+<div class="qr two"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Queue"></div>
+<div class="qr three"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Dynamic"></div>
+<div class="qr four"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Automation"></div>
+<div class="qr main"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=QR-Smart-System"></div>
+
+<div class="hero">
+  <div class="hero-text">
+    <h1>ScanKun Systems</h1>
+    <p>QR systems built for automation, efficiency, and real-world use.</p>
+  </div>
+
+  <button class="button">Let’s Go →</button>
+</div>
+
+
+</body>
+</html>
+
