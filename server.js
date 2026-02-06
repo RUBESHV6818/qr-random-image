@@ -19,22 +19,73 @@ app.get('/', async (req, res) => {
   <title>Happy Scan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
     body {
       margin: 0;
       height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #020617;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #020617;
+      position: relative;
     }
 
+    /* ===== MOVING BACKGROUND ===== */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(99,102,241,0.35), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(56,189,248,0.30), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(168,85,247,0.28), transparent 50%);
+      animation: drift 28s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes drift {
+      0%   { transform: translate(0, 0); }
+      50%  { transform: translate(6%, -6%); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* ===== TITLE ===== */
+    .title {
+      position: absolute;
+      top: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      color: #eef2ff;
+      z-index: 2;
+
+      text-shadow:
+        0 0 10px rgba(99,102,241,0.8),
+        0 0 22px rgba(168,85,247,0.6);
+
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 1; }
+    }
+
+    /* ===== IMAGE ===== */
     img {
-      max-width: 92%;
-      max-height: 92%;
+      max-width: 90%;
+      max-height: 75%;
       border-radius: 18px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
-      animation: fade 0.6s ease;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.65);
+      animation: fade 0.5s ease;
+      z-index: 2;
     }
 
     @keyframes fade {
@@ -42,21 +93,28 @@ app.get('/', async (req, res) => {
       to { opacity: 1; transform: scale(1); }
     }
 
+    /* ===== HINT ===== */
     .hint {
       position: fixed;
       bottom: 16px;
       font-size: 12px;
-      color: #94a3b8;
+      color: #a5b4fc;
+      z-index: 2;
     }
   </style>
 </head>
+
 <body>
+  <div class="title">Happy Scan</div>
+
   <img src="/image?nocache=${Date.now()}">
+
   <div class="hint">Scan again or refresh for another image</div>
 </body>
 </html>
   `);
 });
+
 
 /* ===========================
    RANDOM IMAGE API
