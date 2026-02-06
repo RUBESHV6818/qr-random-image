@@ -329,8 +329,6 @@ app.get('/qr', async (req, res) => {
     transform: translateY(-2px);
   }
 }
-
-
     .sub {
       margin-top: 6px;
       font-size: 11px;
