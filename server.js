@@ -26,6 +26,7 @@ app.get('/', async (req, res) => {
       justify-content: center;
       align-items: center;
       background: #020617;
+      overflow: hidden;
     }
 
     img {
@@ -33,7 +34,7 @@ app.get('/', async (req, res) => {
       max-height: 92%;
       border-radius: 18px;
       box-shadow: 0 25px 60px rgba(0,0,0,0.6);
-      animation: fade 0.5s ease;
+      animation: fade 0.6s ease;
     }
 
     @keyframes fade {
@@ -64,18 +65,16 @@ app.get('/image', async (req, res) => {
   try {
     let images = await fs.promises.readdir(imagesDir);
     images = images.filter(file =>
-      /\.(png|jpg|jpeg|gif)$/i.test(file)
+      /\.(png|jpg|jpeg|gif|webp)$/i.test(file)
     );
 
     if (!images.length) {
       return res.status(500).send('No images found');
     }
 
-    const randomImage =
-      images[Math.floor(Math.random() * images.length)];
-
+    const randomImage = images[Math.floor(Math.random() * images.length)];
     res.sendFile(path.join(imagesDir, randomImage));
-  } catch (err) {
+  } catch {
     res.status(500).send('Error loading images');
   }
 });
@@ -89,10 +88,7 @@ app.get('/qr', async (req, res) => {
   const qr = await QRCode.toDataURL(url, {
     width: 260,
     margin: 2,
-    color: {
-      dark: '#020617',
-      light: '#ffffff'
-    }
+    color: { dark: '#020617', light: '#ffffff' }
   });
 
   res.send(`
@@ -110,72 +106,125 @@ app.get('/qr', async (req, res) => {
     body {
       margin: 0;
       height: 100vh;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-
-      background:
-        radial-gradient(circle at 15% 20%, rgba(99,102,241,0.35), transparent 45%),
-        radial-gradient(circle at 85% 25%, rgba(56,189,248,0.30), transparent 45%),
-        radial-gradient(circle at 50% 85%, rgba(168,85,247,0.25), transparent 50%),
-        linear-gradient(180deg, #020617, #020617);
-
-      background-size: 200% 200%;
-      animation: bgMove 20s ease infinite;
+      background: #020617;
       position: relative;
     }
 
-    @keyframes bgMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    /* ===== GRADIENT LAYERS ===== */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(99,102,241,0.35), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(56,189,248,0.30), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(168,85,247,0.28), transparent 50%);
+      animation: drift 30s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0,0); }
+      50% { transform: translate(6%,-6%); }
+      100% { transform: translate(0,0); }
+    }
+
+    /* ===== GLOW ORBS ===== */
+    .orb {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      animation: orbMove 28s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    .orb.blue {
+      background: #3b82f6;
+      top: 12%;
+      left: 12%;
+    }
+
+    .orb.purple {
+      background: #a855f7;
+      bottom: 10%;
+      right: 15%;
+      animation-delay: -14s;
+    }
+
+    @keyframes orbMove {
+      0% { transform: translate(0,0); }
+      50% { transform: translate(90px,-70px); }
+      100% { transform: translate(0,0); }
+    }
+
+    /* ===== PARTICLES ===== */
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 50%;
+      animation: float 14s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      from { transform: translateY(110vh); opacity: 0; }
+      10% { opacity: 0.8; }
+      to { transform: translateY(-120vh); opacity: 0; }
     }
 
     /* ===== TITLE ===== */
     .title {
       position: absolute;
-      top: 42px;
+      top: 32px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 34px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      color: #eef2ff;
-
-      text-shadow:
-        0 0 10px rgba(99,102,241,0.8),
-        0 0 24px rgba(168,85,247,0.6);
-
-      animation: float 4s ease-in-out infinite;
-      pointer-events: none;
+      font-size: 40px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      z-index: 2;
+      background: linear-gradient(90deg, #818cf8, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glow 3s ease-in-out infinite;
     }
 
-    @keyframes float {
-      0% { transform: translate(-50%, 0); }
-      50% { transform: translate(-50%, -6px); }
-      100% { transform: translate(-50%, 0); }
+    @keyframes glow {
+      0%,100% { filter: drop-shadow(0 0 10px rgba(99,102,241,.6)); }
+      50% { filter: drop-shadow(0 0 24px rgba(168,85,247,1)); }
     }
 
     /* ===== CARD ===== */
     .card {
       width: 320px;
       padding: 26px 22px;
-      margin-top: 40px;
-
+      margin-top: 70px;
+      z-index: 2;
       background: linear-gradient(
         180deg,
         rgba(255,255,255,0.14),
         rgba(255,255,255,0.06)
       );
-
       backdrop-filter: blur(18px);
       border-radius: 24px;
-
       box-shadow:
         0 40px 90px rgba(0,0,0,0.55),
         inset 0 1px 0 rgba(255,255,255,0.18);
-
       text-align: center;
+      animation: pop 0.8s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     .qr-box {
@@ -183,7 +232,6 @@ app.get('/qr', async (req, res) => {
       padding: 16px;
       border-radius: 20px;
       display: inline-block;
-
       box-shadow:
         0 0 0 6px rgba(99,102,241,0.15),
         0 18px 40px rgba(0,0,0,0.35);
@@ -192,7 +240,6 @@ app.get('/qr', async (req, res) => {
     .qr-box img {
       width: 220px;
       height: 220px;
-      display: block;
     }
 
     .desc {
@@ -210,18 +257,31 @@ app.get('/qr', async (req, res) => {
 </head>
 
 <body>
+  <div class="orb blue"></div>
+  <div class="orb purple"></div>
+
   <div class="title">Happy Scan</div>
 
   <div class="card">
     <div class="qr-box">
-    <h1>Scan Me</h1>
       <img src="${qr}" alt="QR Code">
     </div>
-
     <div class="desc">Each scan displays a random image</div>
     <div class="sub">Rescan to view a different one</div>
   </div>
 </body>
+
+<script>
+  for (let i = 0; i < 35; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = 10 + Math.random() * 20 + "s";
+    p.style.opacity = Math.random();
+    p.style.transform = "scale(" + (Math.random() + 0.5) + ")";
+    document.body.appendChild(p);
+  }
+</script>
 </html>
   `);
 });
